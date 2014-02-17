@@ -11,9 +11,9 @@
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/gen" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
@@ -68,6 +68,10 @@
     <orderEntry type="library" name="Maven: aopalliance:aopalliance:1.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.inject.extensions:guice-assistedinject:3.0" level="project" />
     <orderEntry type="library" name="Maven: org.easytesting:fest-assert-core:2.0M10" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.google.android:android:1.5_r4" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.khronos:opengl-api:gl1.1-android-2.1_r1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: xerces:xmlParserAPIs:2.6.2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: xpp3:xpp3:1.1.4c" level="project" />
   </component>
 </module>
 
