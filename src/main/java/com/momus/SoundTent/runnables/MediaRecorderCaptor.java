@@ -1,4 +1,4 @@
-package com.momus.SoundTent.threads;
+package com.momus.SoundTent.runnables;
 
 import android.media.MediaRecorder;
 import android.os.Handler;

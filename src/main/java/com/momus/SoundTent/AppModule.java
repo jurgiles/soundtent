@@ -5,7 +5,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.momus.SoundTent.activities.SoundTentActivity;
 import com.momus.SoundTent.factories.RunnableCaptorFactory;
-import com.momus.SoundTent.threads.MediaRecorderCaptor;
+import com.momus.SoundTent.runnables.MediaRecorderCaptor;
 
 public class AppModule extends AbstractModule {
     @Override

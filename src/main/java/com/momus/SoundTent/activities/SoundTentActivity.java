@@ -1,7 +1,6 @@
 package com.momus.SoundTent.activities;
 
 import android.media.MediaRecorder;
-import android.os.Bundle;
 import android.os.Handler;
 import android.widget.TextView;
 import com.google.inject.Inject;
@@ -28,10 +27,10 @@ public class SoundTentActivity extends RoboActivity {
     @Inject
     private RunnableCaptorFactory runnableCaptorFactory;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
+    @Override
+    protected void onStart() {
+        super.onStart();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         mediaRecorder.setOutputFile(getTempFile());
@@ -48,6 +47,13 @@ public class SoundTentActivity extends RoboActivity {
         Runnable mediaRecorderCaptor = runnableCaptorFactory.createMediaRecorderCaptor(mediaRecorder, soundIndicatorView, handler);
 
         handler.postDelayed(mediaRecorderCaptor, DELAY_MILLIS);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mediaRecorder.stop();
+        mediaRecorder.reset();
     }
 
     private String getTempFile() {

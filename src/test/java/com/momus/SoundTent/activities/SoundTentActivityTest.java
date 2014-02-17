@@ -2,7 +2,7 @@ package com.momus.SoundTent.activities;
 
 import android.media.MediaRecorder;
 import android.os.Handler;
-import com.momus.SoundTent.threads.MediaRecorderCaptor;
+import com.momus.SoundTent.runnables.MediaRecorderCaptor;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,12 +16,12 @@ import java.io.IOException;
 import static com.googlecode.catchexception.CatchException.verifyException;
 import static com.momus.SoundTent.MockInjector.mockInjector;
 import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(RobolectricTestRunner.class)
 public class SoundTentActivityTest {
+    private final ActivityController<SoundTentActivity> activityController = Robolectric.buildActivity(SoundTentActivity.class);
     @Mock
     private MediaRecorder mediaRecorder;
     @Mock
@@ -38,8 +38,15 @@ public class SoundTentActivityTest {
     }
 
     @Test
+    public void shouldNotUseMediaRecorderBeforeOnStart() {
+        activityController.create();
+
+        verifyZeroInteractions(mediaRecorder);
+    }
+
+    @Test
     public void onCreateShouldPrepareAndStartRecorder() throws IOException {
-        Robolectric.buildActivity(SoundTentActivity.class).create();
+        activityController.create().start();
 
         verify(mediaRecorder).prepare();
         verify(mediaRecorder).start();
@@ -47,7 +54,7 @@ public class SoundTentActivityTest {
 
     @Test
     public void onCreateShouldSetupAudioRecorder() {
-        Robolectric.buildActivity(SoundTentActivity.class).create();
+        activityController.create().start();
 
         verify(mediaRecorder).setAudioSource(MediaRecorder.AudioSource.MIC);
         verify(mediaRecorder).setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
@@ -56,14 +63,14 @@ public class SoundTentActivityTest {
 
     @Test
     public void onCreateShouldCreateTempFile(){
-        Robolectric.buildActivity(SoundTentActivity.class).create();
+        activityController.create().start();
 
         verify(mediaRecorder).setOutputFile(anyString());
     }
 
     @Test
     public void onCreateShouldScheduleUpdatesFromMediaRecorderCaptor() {
-        Robolectric.buildActivity(SoundTentActivity.class).create();
+        activityController.create().start();
 
         verify(handler).postDelayed(isA(MediaRecorderCaptor.class), eq(SoundTentActivity.DELAY_MILLIS));
     }
@@ -72,8 +79,18 @@ public class SoundTentActivityTest {
     public void onCreateShouldThrowExceptionWhenMediaRecorderFailsToPrepare() throws IOException {
         doThrow(new IOException()).when(mediaRecorder).prepare();
 
-        ActivityController<SoundTentActivity> soundTentActivityActivityController = Robolectric.buildActivity(SoundTentActivity.class);
+        verifyException(activityController.create(), RuntimeException.class).start();
+    }
 
-        verifyException(soundTentActivityActivityController, RuntimeException.class).create();
+    @Test
+    public void onStopShouldStopMediaRecorder() {
+        activityController.create().stop();
+        verify(mediaRecorder).stop();
+    }
+
+    @Test
+    public void onStopShouldResetMediaRecorder() {
+        activityController.create().stop();
+        verify(mediaRecorder).reset();
     }
 }
