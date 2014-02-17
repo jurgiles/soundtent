@@ -1,24 +1,16 @@
 package com.momus.SoundTent;
 
+import android.util.Log;
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
+import com.momus.SoundTent.activities.SoundTentActivity;
 import com.momus.SoundTent.factories.RunnableCaptorFactory;
 import com.momus.SoundTent.threads.MediaRecorderCaptor;
 
-import java.util.HashMap;
-
-public class TestModule extends AbstractModule {
-    private HashMap<Class, Object> classMocks = new HashMap<Class, Object>();
-
-    public void bind(Class clazz, Object object){
-        classMocks.put(clazz, object);
-    }
-
+public class AppModule extends AbstractModule {
     @Override
     protected void configure() {
-        for(Class clazzes : classMocks.keySet()){
-           bind(clazzes).toInstance(classMocks.get(clazzes));
-        }
+        Log.d(SoundTentActivity.LOG_PRE, "Loading app module");
 
         install(new FactoryModuleBuilder()
                 .implement(Runnable.class, MediaRecorderCaptor.class)
