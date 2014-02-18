@@ -2,6 +2,7 @@ package com.momus.SoundTent.activities;
 
 import android.media.MediaRecorder;
 import android.os.Handler;
+import com.momus.SoundTent.factories.AndroidModelFactory;
 import com.momus.SoundTent.runnables.MediaRecorderCaptor;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,7 +16,9 @@ import java.io.IOException;
 
 import static com.googlecode.catchexception.CatchException.verifyException;
 import static com.momus.SoundTent.MockInjector.mockInjector;
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -25,6 +28,8 @@ public class SoundTentActivityTest {
     private MediaRecorder mediaRecorder;
     @Mock
     private Handler handler;
+    @Mock
+    private AndroidModelFactory modelFactory;
 
     private ActivityController<SoundTentActivity> activityController;
 
@@ -35,7 +40,10 @@ public class SoundTentActivityTest {
         mockInjector()
                 .bind(MediaRecorder.class, mediaRecorder)
                 .bind(Handler.class, handler)
+                .bind(AndroidModelFactory.class, modelFactory)
                 .inject();
+
+        when(modelFactory.createMediaRecorder()).thenReturn(mediaRecorder);
 
         activityController = Robolectric.buildActivity(SoundTentActivity.class);
     }
@@ -87,7 +95,7 @@ public class SoundTentActivityTest {
 
     @Test
     public void onStopShouldStopMediaRecorder() {
-        activityController.create().stop();
+        activityController.create().start().stop();
 
         verify(mediaRecorder).stop();
     }

@@ -19,7 +19,6 @@ public class TestModule extends AbstractModule {
            bind(clazzes).toInstance(classMocks.get(clazzes));
         }
 
-        install(new FactoryModuleBuilder()
-                .build(RunnableCaptorFactory.class));
+        install(new FactoryModuleBuilder().build(RunnableCaptorFactory.class));
     }
 }

@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.widget.TextView;
 import com.google.inject.Inject;
 import com.momus.SoundTent.R;
+import com.momus.SoundTent.factories.AndroidModelFactory;
 import com.momus.SoundTent.factories.RunnableCaptorFactory;
 import com.momus.SoundTent.runnables.MediaRecorderCaptor;
 import roboguice.activity.RoboActivity;
@@ -22,17 +23,20 @@ public class SoundTentActivity extends RoboActivity {
     @InjectView(R.id.sound_indicator)
     private TextView soundIndicatorView;
     @Inject
-    private MediaRecorder mediaRecorder;
-    @Inject
     private Handler handler;
     @Inject
     private RunnableCaptorFactory runnableCaptorFactory;
+    @Inject
+    private AndroidModelFactory modelFactory;
 
     private MediaRecorderCaptor mediaRecorderCaptor;
+    private MediaRecorder mediaRecorder;
 
     @Override
     protected void onStart() {
         super.onStart();
+
+        mediaRecorder = modelFactory.createMediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         mediaRecorder.setOutputFile(getTempFile());
