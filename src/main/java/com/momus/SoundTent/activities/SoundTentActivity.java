@@ -27,6 +27,7 @@ public class SoundTentActivity extends RoboActivity {
     @Inject
     private RunnableCaptorFactory runnableCaptorFactory;
 
+    private Runnable mediaRecorderCaptor;
 
     @Override
     protected void onStart() {
@@ -44,7 +45,7 @@ public class SoundTentActivity extends RoboActivity {
 
         mediaRecorder.start();
 
-        Runnable mediaRecorderCaptor = runnableCaptorFactory.createMediaRecorderCaptor(mediaRecorder, soundIndicatorView, handler);
+        mediaRecorderCaptor = runnableCaptorFactory.createMediaRecorderCaptor(mediaRecorder, soundIndicatorView, handler);
 
         handler.postDelayed(mediaRecorderCaptor, DELAY_MILLIS);
     }
@@ -52,8 +53,12 @@ public class SoundTentActivity extends RoboActivity {
     @Override
     protected void onStop() {
         super.onStop();
+
         mediaRecorder.stop();
         mediaRecorder.reset();
+        mediaRecorder.release();
+
+        handler.removeCallbacks(mediaRecorderCaptor);
     }
 
     private String getTempFile() {

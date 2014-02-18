@@ -85,12 +85,32 @@ public class SoundTentActivityTest {
     @Test
     public void onStopShouldStopMediaRecorder() {
         activityController.create().stop();
+
         verify(mediaRecorder).stop();
     }
 
     @Test
     public void onStopShouldResetMediaRecorder() {
-        activityController.create().stop();
+        activityController.create().start().pause().stop();
+
         verify(mediaRecorder).reset();
     }
+
+    @Test
+    public void onStopShouldReleaseMediaRecorder() {
+        activityController.create().start().pause().stop();
+
+        verify(mediaRecorder).release();
+    }
+
+    @Test
+    public void onStopShouldRemoveMediaRecorderCaptorFromHandler() {
+        activityController.create().start().pause();
+        verify(handler, never()).removeCallbacks(isA(MediaRecorderCaptor.class));
+
+        activityController.stop();
+        verify(handler).removeCallbacks(isA(MediaRecorderCaptor.class));
+    }
+
+
 }
