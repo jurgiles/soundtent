@@ -21,11 +21,12 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(RobolectricTestRunner.class)
 public class SoundTentActivityTest {
-    private final ActivityController<SoundTentActivity> activityController = Robolectric.buildActivity(SoundTentActivity.class);
     @Mock
     private MediaRecorder mediaRecorder;
     @Mock
     private Handler handler;
+
+    private ActivityController<SoundTentActivity> activityController;
 
     @Before
     public void setup() {
@@ -35,6 +36,8 @@ public class SoundTentActivityTest {
                 .bind(MediaRecorder.class, mediaRecorder)
                 .bind(Handler.class, handler)
                 .inject();
+
+        activityController = Robolectric.buildActivity(SoundTentActivity.class);
     }
 
     @Test
@@ -111,6 +114,4 @@ public class SoundTentActivityTest {
         activityController.stop();
         verify(handler).removeCallbacks(isA(MediaRecorderCaptor.class));
     }
-
-
 }

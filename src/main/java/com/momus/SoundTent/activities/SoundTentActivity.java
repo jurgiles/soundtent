@@ -6,6 +6,7 @@ import android.widget.TextView;
 import com.google.inject.Inject;
 import com.momus.SoundTent.R;
 import com.momus.SoundTent.factories.RunnableCaptorFactory;
+import com.momus.SoundTent.runnables.MediaRecorderCaptor;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
@@ -27,7 +28,7 @@ public class SoundTentActivity extends RoboActivity {
     @Inject
     private RunnableCaptorFactory runnableCaptorFactory;
 
-    private Runnable mediaRecorderCaptor;
+    private MediaRecorderCaptor mediaRecorderCaptor;
 
     @Override
     protected void onStart() {

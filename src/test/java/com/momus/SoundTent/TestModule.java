@@ -3,7 +3,6 @@ package com.momus.SoundTent;
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.momus.SoundTent.factories.RunnableCaptorFactory;
-import com.momus.SoundTent.runnables.MediaRecorderCaptor;
 
 import java.util.HashMap;
 
@@ -21,7 +20,6 @@ public class TestModule extends AbstractModule {
         }
 
         install(new FactoryModuleBuilder()
-                .implement(Runnable.class, MediaRecorderCaptor.class)
                 .build(RunnableCaptorFactory.class));
     }
 }
