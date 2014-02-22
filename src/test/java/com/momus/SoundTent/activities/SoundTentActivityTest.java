@@ -3,7 +3,7 @@ package com.momus.SoundTent.activities;
 import android.media.MediaRecorder;
 import android.os.Handler;
 import com.momus.SoundTent.factories.AndroidModelFactory;
-import com.momus.SoundTent.runnables.MediaRecorderCaptor;
+import com.momus.SoundTent.runnables.MediaRecorderViewAdapter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -82,10 +82,10 @@ public class SoundTentActivityTest {
     @Test
     public void onResumeShouldScheduleUpdatesFromMediaRecorderCaptor() {
         activityController.create().start();
-        verify(handler, never()).postDelayed(isA(MediaRecorderCaptor.class), eq(SoundTentActivity.DELAY_MILLIS));
+        verify(handler, never()).postDelayed(isA(MediaRecorderViewAdapter.class), eq(SoundTentActivity.DELAY_MILLIS));
 
         activityController.resume();
-        verify(handler).postDelayed(isA(MediaRecorderCaptor.class), eq(SoundTentActivity.DELAY_MILLIS));
+        verify(handler).postDelayed(isA(MediaRecorderViewAdapter.class), eq(SoundTentActivity.DELAY_MILLIS));
     }
 
     @Test
@@ -119,9 +119,9 @@ public class SoundTentActivityTest {
     @Test
     public void onPauseShouldRemoveMediaRecorderCaptorFromHandler() {
         activityController.create().start().resume();
-        verify(handler, never()).removeCallbacks(isA(MediaRecorderCaptor.class));
+        verify(handler, never()).removeCallbacks(isA(MediaRecorderViewAdapter.class));
 
         activityController.pause();
-        verify(handler).removeCallbacks(isA(MediaRecorderCaptor.class));
+        verify(handler).removeCallbacks(isA(MediaRecorderViewAdapter.class));
     }
 }

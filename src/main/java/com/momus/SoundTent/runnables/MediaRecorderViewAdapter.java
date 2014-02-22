@@ -10,7 +10,7 @@ import com.momus.SoundTent.activities.SoundTentActivity;
 
 import static java.lang.Math.min;
 
-public class MediaRecorderCaptor implements Runnable{
+public class MediaRecorderViewAdapter implements Runnable{
     public static final double FADE_RATE = .97;
     public static final int MAX_COLOR = 255;
     public static final int AMP_COLOR_RATIO = 90;
@@ -20,7 +20,7 @@ public class MediaRecorderCaptor implements Runnable{
     private Double maxAmplitude;
 
     @Inject
-    public MediaRecorderCaptor(@Assisted MediaRecorder mediaRecorder, @Assisted View view, @Assisted Handler handler) {
+    public MediaRecorderViewAdapter(@Assisted MediaRecorder mediaRecorder, @Assisted View view, @Assisted Handler handler) {
         this.mediaRecorder = mediaRecorder;
         this.view = view;
         this.handler = handler;

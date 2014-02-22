@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(RobolectricTestRunner.class)
-public class MediaRecorderCaptorTest {
+public class MediaRecorderViewAdapterTest {
     public static final int AMP_VALUE = 1100;
     public static final int HIGHER_AMP_VALUE = 5000;
     public static final int MAX_AMP_READING = 32767;
@@ -37,22 +37,22 @@ public class MediaRecorderCaptorTest {
 
     @Test
     public void shouldScheduleUpdateFromMediaRecorder() {
-        MediaRecorderCaptor mediaRecorderCaptor = new MediaRecorderCaptor(mediaRecorder, view, handler);
+        MediaRecorderViewAdapter mediaRecorderViewAdapter = new MediaRecorderViewAdapter(mediaRecorder, view, handler);
 
-        mediaRecorderCaptor.run();
+        mediaRecorderViewAdapter.run();
 
-        verify(handler).postDelayed(mediaRecorderCaptor, SoundTentActivity.DELAY_MILLIS);
+        verify(handler).postDelayed(mediaRecorderViewAdapter, SoundTentActivity.DELAY_MILLIS);
     }
 
     @Test
     public void shouldSetColorOfBackgroundRelativeToAmplitudeWhenHigherThanLastReading() {
         when(mediaRecorder.getMaxAmplitude()).thenReturn(AMP_VALUE).thenReturn(HIGHER_AMP_VALUE);
 
-        MediaRecorderCaptor mediaRecorderCaptor = new MediaRecorderCaptor(mediaRecorder, view, handler);
-        mediaRecorderCaptor.run();
-        mediaRecorderCaptor.run();
+        MediaRecorderViewAdapter mediaRecorderViewAdapter = new MediaRecorderViewAdapter(mediaRecorder, view, handler);
+        mediaRecorderViewAdapter.run();
+        mediaRecorderViewAdapter.run();
 
-        int expectedColor = Color.rgb(HIGHER_AMP_VALUE / MediaRecorderCaptor.AMP_COLOR_RATIO, 0, 0);
+        int expectedColor = Color.rgb(HIGHER_AMP_VALUE / MediaRecorderViewAdapter.AMP_COLOR_RATIO, 0, 0);
 
         assertThat(view.getBackground()).isEqualTo(new ColorDrawable(expectedColor));
     }
@@ -61,11 +61,11 @@ public class MediaRecorderCaptorTest {
     public void shouldSlowlyDarkenBackgroundColor() {
         when(mediaRecorder.getMaxAmplitude()).thenReturn(HIGHER_AMP_VALUE).thenReturn(AMP_VALUE);
 
-        MediaRecorderCaptor mediaRecorderCaptor = new MediaRecorderCaptor(mediaRecorder, view, handler);
-        mediaRecorderCaptor.run();
-        mediaRecorderCaptor.run();
+        MediaRecorderViewAdapter mediaRecorderViewAdapter = new MediaRecorderViewAdapter(mediaRecorder, view, handler);
+        mediaRecorderViewAdapter.run();
+        mediaRecorderViewAdapter.run();
 
-        Double expectedAmplitude = HIGHER_AMP_VALUE * MediaRecorderCaptor.FADE_RATE / MediaRecorderCaptor.AMP_COLOR_RATIO;
+        Double expectedAmplitude = HIGHER_AMP_VALUE * MediaRecorderViewAdapter.FADE_RATE / MediaRecorderViewAdapter.AMP_COLOR_RATIO;
         int expectedColor = Color.rgb(expectedAmplitude.intValue(), 0, 0);
         assertThat(view.getBackground()).isEqualTo(new ColorDrawable(expectedColor));
     }
@@ -74,8 +74,8 @@ public class MediaRecorderCaptorTest {
     public void shouldSetBackgroundColorToMaxIfAmplitudeCreatesColorOver255() {
         when(mediaRecorder.getMaxAmplitude()).thenReturn(MAX_AMP_READING);
 
-        MediaRecorderCaptor mediaRecorderCaptor = new MediaRecorderCaptor(mediaRecorder, view, handler);
-        mediaRecorderCaptor.run();
+        MediaRecorderViewAdapter mediaRecorderViewAdapter = new MediaRecorderViewAdapter(mediaRecorder, view, handler);
+        mediaRecorderViewAdapter.run();
 
         int expectedColor = Color.rgb(255, 0, 0);
         assertThat(view.getBackground()).isEqualTo(new ColorDrawable(expectedColor));

@@ -7,7 +7,7 @@ import com.google.inject.Inject;
 import com.momus.SoundTent.R;
 import com.momus.SoundTent.factories.AndroidModelFactory;
 import com.momus.SoundTent.factories.RunnableCaptorFactory;
-import com.momus.SoundTent.runnables.MediaRecorderCaptor;
+import com.momus.SoundTent.runnables.MediaRecorderViewAdapter;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
@@ -29,7 +29,7 @@ public class SoundTentActivity extends RoboActivity {
     @Inject
     private AndroidModelFactory modelFactory;
 
-    private MediaRecorderCaptor mediaRecorderCaptor;
+    private MediaRecorderViewAdapter mediaRecorderViewAdapter;
     private MediaRecorder mediaRecorder;
 
     @Override
@@ -55,16 +55,16 @@ public class SoundTentActivity extends RoboActivity {
     protected void onResume() {
         super.onResume();
 
-        mediaRecorderCaptor = runnableCaptorFactory.createMediaRecorderCaptor(mediaRecorder, soundIndicatorView, handler);
+        mediaRecorderViewAdapter = runnableCaptorFactory.createMediaRecorderCaptor(mediaRecorder, soundIndicatorView, handler);
 
-        handler.postDelayed(mediaRecorderCaptor, DELAY_MILLIS);
+        handler.postDelayed(mediaRecorderViewAdapter, DELAY_MILLIS);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
 
-        handler.removeCallbacks(mediaRecorderCaptor);
+        handler.removeCallbacks(mediaRecorderViewAdapter);
     }
 
     @Override
