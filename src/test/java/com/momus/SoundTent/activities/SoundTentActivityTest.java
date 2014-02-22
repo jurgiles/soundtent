@@ -56,7 +56,7 @@ public class SoundTentActivityTest {
     }
 
     @Test
-    public void onCreateShouldPrepareAndStartRecorder() throws IOException {
+    public void onStartShouldPrepareAndStartRecorder() throws IOException {
         activityController.create().start();
 
         verify(mediaRecorder).prepare();
@@ -64,7 +64,7 @@ public class SoundTentActivityTest {
     }
 
     @Test
-    public void onCreateShouldSetupAudioRecorder() {
+    public void onStartShouldSetupAudioRecorder() {
         activityController.create().start();
 
         verify(mediaRecorder).setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -73,21 +73,23 @@ public class SoundTentActivityTest {
     }
 
     @Test
-    public void onCreateShouldCreateTempFile(){
-        activityController.create().start();
+    public void onStartShouldCreateTempFile(){
+        activityController.create().start().resume();
 
         verify(mediaRecorder).setOutputFile(anyString());
     }
 
     @Test
-    public void onCreateShouldScheduleUpdatesFromMediaRecorderCaptor() {
+    public void onResumeShouldScheduleUpdatesFromMediaRecorderCaptor() {
         activityController.create().start();
+        verify(handler, never()).postDelayed(isA(MediaRecorderCaptor.class), eq(SoundTentActivity.DELAY_MILLIS));
 
+        activityController.resume();
         verify(handler).postDelayed(isA(MediaRecorderCaptor.class), eq(SoundTentActivity.DELAY_MILLIS));
     }
 
     @Test
-    public void onCreateShouldThrowExceptionWhenMediaRecorderFailsToPrepare() throws IOException {
+    public void onStartShouldThrowExceptionWhenMediaRecorderFailsToPrepare() throws IOException {
         doThrow(new IOException()).when(mediaRecorder).prepare();
 
         verifyException(activityController.create(), RuntimeException.class).start();
@@ -95,31 +97,31 @@ public class SoundTentActivityTest {
 
     @Test
     public void onStopShouldStopMediaRecorder() {
-        activityController.create().start().stop();
+        activityController.create().start().resume().pause().stop();
 
         verify(mediaRecorder).stop();
     }
 
     @Test
     public void onStopShouldResetMediaRecorder() {
-        activityController.create().start().pause().stop();
+        activityController.create().start().resume().pause().stop();
 
         verify(mediaRecorder).reset();
     }
 
     @Test
     public void onStopShouldReleaseMediaRecorder() {
-        activityController.create().start().pause().stop();
+        activityController.create().start().resume().pause().stop();
 
         verify(mediaRecorder).release();
     }
 
     @Test
-    public void onStopShouldRemoveMediaRecorderCaptorFromHandler() {
-        activityController.create().start().pause();
+    public void onPauseShouldRemoveMediaRecorderCaptorFromHandler() {
+        activityController.create().start().resume();
         verify(handler, never()).removeCallbacks(isA(MediaRecorderCaptor.class));
 
-        activityController.stop();
+        activityController.pause();
         verify(handler).removeCallbacks(isA(MediaRecorderCaptor.class));
     }
 }
