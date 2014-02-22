@@ -1,6 +1,7 @@
 package com.momus.SoundTent.runnables;
 
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaRecorder;
 import android.os.Handler;
 import android.view.View;
@@ -16,7 +17,6 @@ import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
-import static org.robolectric.Robolectric.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 public class MediaRecorderCaptorTest {
@@ -53,7 +53,8 @@ public class MediaRecorderCaptorTest {
         mediaRecorderCaptor.run();
 
         int expectedColor = Color.rgb(HIGHER_AMP_VALUE / MediaRecorderCaptor.AMP_COLOR_RATIO, 0, 0);
-        assertThat(shadowOf(view).getBackgroundColor()).isEqualTo(expectedColor);
+
+        assertThat(view.getBackground()).isEqualTo(new ColorDrawable(expectedColor));
     }
 
     @Test
@@ -66,7 +67,7 @@ public class MediaRecorderCaptorTest {
 
         Double expectedAmplitude = HIGHER_AMP_VALUE * MediaRecorderCaptor.FADE_RATE / MediaRecorderCaptor.AMP_COLOR_RATIO;
         int expectedColor = Color.rgb(expectedAmplitude.intValue(), 0, 0);
-        assertThat(shadowOf(view).getBackgroundColor()).isEqualTo(expectedColor);
+        assertThat(view.getBackground()).isEqualTo(new ColorDrawable(expectedColor));
     }
 
     @Test
@@ -77,6 +78,6 @@ public class MediaRecorderCaptorTest {
         mediaRecorderCaptor.run();
 
         int expectedColor = Color.rgb(255, 0, 0);
-        assertThat(shadowOf(view).getBackgroundColor()).isEqualTo(expectedColor);
+        assertThat(view.getBackground()).isEqualTo(new ColorDrawable(expectedColor));
     }
 }
