@@ -1,8 +1,10 @@
 package com.momus.SoundTent.activities;
 
 import android.media.MediaRecorder;
+import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.WindowManager;
 import com.google.inject.Inject;
 import com.momus.SoundTent.R;
 import com.momus.SoundTent.factories.AndroidModelFactory;
@@ -31,6 +33,13 @@ public class SoundTentActivity extends RoboActivity {
 
     private MediaRecorderViewAdapter mediaRecorderViewAdapter;
     private MediaRecorder mediaRecorder;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
 
     @Override
     protected void onStart() {

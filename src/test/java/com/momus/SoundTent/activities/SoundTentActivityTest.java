@@ -2,13 +2,14 @@ package com.momus.SoundTent.activities;
 
 import android.media.MediaRecorder;
 import android.os.Handler;
+import android.view.Window;
+import android.view.WindowManager;
 import com.momus.SoundTent.factories.AndroidModelFactory;
 import com.momus.SoundTent.runnables.MediaRecorderViewAdapter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.util.ActivityController;
 
@@ -16,11 +17,14 @@ import java.io.IOException;
 
 import static com.googlecode.catchexception.CatchException.verifyException;
 import static com.momus.SoundTent.MockInjector.mockInjector;
+import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static org.robolectric.Robolectric.buildActivity;
+import static org.robolectric.Robolectric.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 public class SoundTentActivityTest {
@@ -45,7 +49,7 @@ public class SoundTentActivityTest {
 
         when(modelFactory.createMediaRecorder()).thenReturn(mediaRecorder);
 
-        activityController = Robolectric.buildActivity(SoundTentActivity.class);
+        activityController = buildActivity(SoundTentActivity.class);
     }
 
     @Test
@@ -53,6 +57,15 @@ public class SoundTentActivityTest {
         activityController.create();
 
         verifyZeroInteractions(mediaRecorder);
+    }
+
+    @Test
+    public void onCreateShouldSetActivityToKeepScreenAwake() {
+        Window activityWindow = activityController.create().get().getWindow();
+
+        boolean keepScreenOnFlag = shadowOf(activityWindow).getFlag(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        assertThat(keepScreenOnFlag).isTrue();
     }
 
     @Test
