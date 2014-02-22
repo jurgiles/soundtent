@@ -1,8 +1,9 @@
 package com.momus.SoundTent.runnables;
 
+import android.graphics.Color;
 import android.media.MediaRecorder;
 import android.os.Handler;
-import android.widget.TextView;
+import android.view.View;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.momus.SoundTent.activities.SoundTentActivity;
@@ -10,13 +11,13 @@ import com.momus.SoundTent.activities.SoundTentActivity;
 public class MediaRecorderCaptor implements Runnable{
 
     private final MediaRecorder mediaRecorder;
-    private final TextView textView;
+    private final View view;
     private final Handler handler;
 
     @Inject
-    public MediaRecorderCaptor(@Assisted MediaRecorder mediaRecorder, @Assisted TextView textView, @Assisted Handler handler) {
+    public MediaRecorderCaptor(@Assisted MediaRecorder mediaRecorder, @Assisted View view, @Assisted Handler handler) {
         this.mediaRecorder = mediaRecorder;
-        this.textView = textView;
+        this.view = view;
         this.handler = handler;
     }
 
@@ -24,7 +25,7 @@ public class MediaRecorderCaptor implements Runnable{
     public void run(){
         Integer maxAmplitude = mediaRecorder.getMaxAmplitude();
 
-        textView.setText(String.valueOf(maxAmplitude));
+        view.setBackgroundColor(Color.argb(255, maxAmplitude/98, 0, 0));
 
         handler.postDelayed(this, SoundTentActivity.DELAY_MILLIS);
     }

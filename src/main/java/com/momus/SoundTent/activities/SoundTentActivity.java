@@ -2,7 +2,7 @@ package com.momus.SoundTent.activities;
 
 import android.media.MediaRecorder;
 import android.os.Handler;
-import android.widget.TextView;
+import android.view.View;
 import com.google.inject.Inject;
 import com.momus.SoundTent.R;
 import com.momus.SoundTent.factories.AndroidModelFactory;
@@ -18,10 +18,10 @@ import java.io.IOException;
 @ContentView(R.layout.main)
 public class SoundTentActivity extends RoboActivity {
     public static final String LOG_PRE = "SoundTent";
-    public static final long DELAY_MILLIS = 150L;
+    public static final long DELAY_MILLIS = 100L;
 
     @InjectView(R.id.sound_indicator)
-    private TextView soundIndicatorView;
+    private View soundIndicatorView;
     @Inject
     private Handler handler;
     @Inject
