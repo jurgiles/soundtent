@@ -22,6 +22,7 @@ import static org.robolectric.Robolectric.shadowOf;
 public class MediaRecorderCaptorTest {
     public static final int AMP_VALUE = 1100;
     public static final int HIGHER_AMP_VALUE = 5000;
+    public static final int MAX_AMP_READING = 32767;
     @Mock
     private Handler handler;
     @Mock
@@ -51,7 +52,7 @@ public class MediaRecorderCaptorTest {
         mediaRecorderCaptor.run();
         mediaRecorderCaptor.run();
 
-        int expectedColor = Color.rgb(HIGHER_AMP_VALUE / 98, 0, 0);
+        int expectedColor = Color.rgb(HIGHER_AMP_VALUE / MediaRecorderCaptor.AMP_COLOR_RATIO, 0, 0);
         assertThat(shadowOf(view).getBackgroundColor()).isEqualTo(expectedColor);
     }
 
@@ -63,8 +64,19 @@ public class MediaRecorderCaptorTest {
         mediaRecorderCaptor.run();
         mediaRecorderCaptor.run();
 
-        Double expectedAmplitude = HIGHER_AMP_VALUE * .9 / 98;
+        Double expectedAmplitude = HIGHER_AMP_VALUE * MediaRecorderCaptor.FADE_RATE / MediaRecorderCaptor.AMP_COLOR_RATIO;
         int expectedColor = Color.rgb(expectedAmplitude.intValue(), 0, 0);
+        assertThat(shadowOf(view).getBackgroundColor()).isEqualTo(expectedColor);
+    }
+
+    @Test
+    public void shouldSetBackgroundColorToMaxIfAmplitudeCreatesColorOver255() {
+        when(mediaRecorder.getMaxAmplitude()).thenReturn(MAX_AMP_READING);
+
+        MediaRecorderCaptor mediaRecorderCaptor = new MediaRecorderCaptor(mediaRecorder, view, handler);
+        mediaRecorderCaptor.run();
+
+        int expectedColor = Color.rgb(255, 0, 0);
         assertThat(shadowOf(view).getBackgroundColor()).isEqualTo(expectedColor);
     }
 }
