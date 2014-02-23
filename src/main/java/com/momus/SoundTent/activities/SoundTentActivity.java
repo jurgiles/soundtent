@@ -33,6 +33,7 @@ public class SoundTentActivity extends RoboActivity {
 
     private MediaRecorderViewAdapter mediaRecorderViewAdapter;
     private MediaRecorder mediaRecorder;
+    private String tempFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +46,11 @@ public class SoundTentActivity extends RoboActivity {
     protected void onStart() {
         super.onStart();
 
+        tempFile = getTempFile();
         mediaRecorder = modelFactory.createMediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        mediaRecorder.setOutputFile(getTempFile());
+        mediaRecorder.setOutputFile(tempFile);
         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
         try {
@@ -84,11 +86,12 @@ public class SoundTentActivity extends RoboActivity {
         mediaRecorder.reset();
         mediaRecorder.release();
 
+        new File(tempFile).delete();
     }
 
     private String getTempFile() {
         try {
-            return File.createTempFile("st-", ".3gpp").getCanonicalPath();
+            return File.createTempFile("soundtent", null, getCacheDir()).getCanonicalPath();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

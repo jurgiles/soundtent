@@ -9,6 +9,7 @@ import com.momus.SoundTent.runnables.MediaRecorderViewAdapter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.util.ActivityController;
@@ -18,7 +19,6 @@ import java.io.IOException;
 import static com.googlecode.catchexception.CatchException.verifyException;
 import static com.momus.SoundTent.MockInjector.mockInjector;
 import static org.fest.assertions.api.Assertions.assertThat;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.*;
@@ -86,10 +86,26 @@ public class SoundTentActivityTest {
     }
 
     @Test
-    public void onStartShouldCreateTempFile(){
-        activityController.create().start().resume();
+    public void onStartShouldCreateTempRecordingFile() throws IOException {
+        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+        SoundTentActivity activity = activityController.create().start().resume().get();
 
-        verify(mediaRecorder).setOutputFile(anyString());
+        verify(mediaRecorder).setOutputFile(captor.capture());
+
+        String tempFile = captor.getValue();
+        assertThat(tempFile).contains(activity.getCacheDir().getCanonicalPath());
+        assertThat(tempFile).contains("soundtent");
+    }
+
+    @Test
+    public void onStopShouldDeleteTempRecordingFile() {
+        SoundTentActivity activity = activityController.create().start().get();
+
+        assertThat(activity.getCacheDir().listFiles().length).isEqualTo(1);
+
+        activityController.pause().stop();
+
+        assertThat(activity.getCacheDir().listFiles().length).isEqualTo(0);
     }
 
     @Test
