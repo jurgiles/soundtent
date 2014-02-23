@@ -1,7 +1,6 @@
 package com.momus.SoundTent.runnables;
 
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.media.MediaRecorder;
 import android.os.Handler;
 import android.view.View;
@@ -10,13 +9,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static org.robolectric.Robolectric.application;
+import static org.robolectric.Robolectric.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 public class MediaRecorderViewAdapterTest {
@@ -28,7 +28,7 @@ public class MediaRecorderViewAdapterTest {
     @Mock
     private MediaRecorder mediaRecorder;
 
-    private View view = new View(Robolectric.application);
+    private View view = new View(application);
 
     @Before
     public void setup(){
@@ -52,9 +52,9 @@ public class MediaRecorderViewAdapterTest {
         mediaRecorderViewAdapter.run();
         mediaRecorderViewAdapter.run();
 
-        int expectedColor = Color.rgb(HIGHER_AMP_VALUE / MediaRecorderViewAdapter.AMP_COLOR_RATIO, 0, 0);
+        int expectedColor = Color.rgb(0, HIGHER_AMP_VALUE / MediaRecorderViewAdapter.AMP_COLOR_RATIO, 0);
 
-        assertThat(view.getBackground()).isEqualTo(new ColorDrawable(expectedColor));
+        assertThat(shadowOf(view).getBackgroundColor()).isEqualTo(expectedColor);
     }
 
     @Test
@@ -66,8 +66,8 @@ public class MediaRecorderViewAdapterTest {
         mediaRecorderViewAdapter.run();
 
         Double expectedAmplitude = HIGHER_AMP_VALUE * MediaRecorderViewAdapter.FADE_RATE / MediaRecorderViewAdapter.AMP_COLOR_RATIO;
-        int expectedColor = Color.rgb(expectedAmplitude.intValue(), 0, 0);
-        assertThat(view.getBackground()).isEqualTo(new ColorDrawable(expectedColor));
+        int expectedColor = Color.rgb(0, expectedAmplitude.intValue(), 0);
+        assertThat(shadowOf(view).getBackgroundColor()).isEqualTo(expectedColor);
     }
 
     @Test
@@ -77,7 +77,7 @@ public class MediaRecorderViewAdapterTest {
         MediaRecorderViewAdapter mediaRecorderViewAdapter = new MediaRecorderViewAdapter(mediaRecorder, view, handler);
         mediaRecorderViewAdapter.run();
 
-        int expectedColor = Color.rgb(255, 0, 0);
-        assertThat(view.getBackground()).isEqualTo(new ColorDrawable(expectedColor));
+        int expectedColor = Color.rgb(0, 255, 0);
+        assertThat(shadowOf(view).getBackgroundColor()).isEqualTo(expectedColor);
     }
 }

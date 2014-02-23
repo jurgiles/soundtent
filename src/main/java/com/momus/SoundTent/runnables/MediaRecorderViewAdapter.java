@@ -12,8 +12,9 @@ import static java.lang.Math.min;
 
 public class MediaRecorderViewAdapter implements Runnable{
     public static final double FADE_RATE = .97;
+    public static final int AMP_COLOR_RATIO = 128;
     public static final int MAX_COLOR = 255;
-    public static final int AMP_COLOR_RATIO = 90;
+
     private final MediaRecorder mediaRecorder;
     private final View view;
     private final Handler handler;
@@ -37,7 +38,7 @@ public class MediaRecorderViewAdapter implements Runnable{
             maxAmplitude = maxAmplitude * FADE_RATE;
         }
 
-        int newColor = Color.rgb(min(maxAmplitude.intValue() / AMP_COLOR_RATIO, MAX_COLOR), 0, 0);
+        int newColor = Color.rgb(0, min(maxAmplitude.intValue() / AMP_COLOR_RATIO, MAX_COLOR), 0);
 
         view.setBackgroundColor(newColor);
 
