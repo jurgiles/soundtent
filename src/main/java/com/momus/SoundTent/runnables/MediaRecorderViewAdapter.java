@@ -13,6 +13,7 @@ public class MediaRecorderViewAdapter implements Runnable{
     private final View view;
     private final Handler handler;
 
+    /* todo: inject */
     FadeFx fadeFx = new FadeFx();
 
     @Inject

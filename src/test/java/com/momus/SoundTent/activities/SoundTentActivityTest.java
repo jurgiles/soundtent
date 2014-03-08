@@ -7,6 +7,7 @@ import android.view.WindowManager;
 import com.momus.SoundTent.factories.AndroidModelFactory;
 import com.momus.SoundTent.runnables.MediaRecorderViewAdapter;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -111,6 +112,16 @@ public class SoundTentActivityTest {
         doThrow(new IOException()).when(mediaRecorder).prepare();
 
         verifyException(activityController.create(), RuntimeException.class).start();
+    }
+
+    @Ignore
+    public void onStopShouldOnlyCleanUpIfTempFileIsAround() {
+        //todo: can we check state of mediarecorder?
+        activityController.create().start().resume().pause().stop();
+
+        verify(mediaRecorder, never()).stop();
+        verify(mediaRecorder, never()).release();
+        verify(mediaRecorder, never()).reset();
     }
 
     @Test
