@@ -7,7 +7,7 @@ import com.momus.SoundTent.factories.RunnableCaptorFactory;
 import java.util.HashMap;
 
 public class TestModule extends AbstractModule {
-    private HashMap<Class, Object> classMocks = new HashMap<Class, Object>();
+    private static final HashMap<Class, Object> classMocks = new HashMap<Class, Object>();
 
     public void bind(Class clazz, Object object){
         classMocks.put(clazz, object);

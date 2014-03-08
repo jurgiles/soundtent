@@ -98,17 +98,6 @@ public class SoundTentActivityTest {
     }
 
     @Test
-    public void onStopShouldDeleteTempRecordingFile() {
-        SoundTentActivity activity = activityController.create().start().get();
-
-        assertThat(activity.getCacheDir().listFiles().length).isEqualTo(1);
-
-        activityController.pause().stop();
-
-        assertThat(activity.getCacheDir().listFiles().length).isEqualTo(0);
-    }
-
-    @Test
     public void onResumeShouldScheduleUpdatesFromMediaRecorderCaptor() {
         activityController.create().start();
         verify(handler, never()).postDelayed(isA(MediaRecorderViewAdapter.class), eq(SoundTentActivity.DELAY_MILLIS));
@@ -143,6 +132,17 @@ public class SoundTentActivityTest {
         activityController.create().start().resume().pause().stop();
 
         verify(mediaRecorder).release();
+    }
+
+    @Test
+    public void onStopShouldDeleteTempRecordingFile() {
+        SoundTentActivity activity = activityController.create().start().get();
+
+        assertThat(activity.getCacheDir().listFiles().length).isEqualTo(1);
+
+        activityController.pause().stop();
+
+        assertThat(activity.getCacheDir().listFiles().length).isEqualTo(0);
     }
 
     @Test
