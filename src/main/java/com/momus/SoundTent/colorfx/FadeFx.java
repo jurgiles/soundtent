@@ -18,12 +18,12 @@ public class FadeFx {
         int color;
 
         if(amplitude > lastAmplitude){
+            lastAmplitude = amplitude;
             color = Color.rgb(0, amplitude / BIT_PER_AMPLITUDE, 0);
         }else{
-            color = Color.rgb(0, Math.round(lastAmplitude / BIT_PER_AMPLITUDE * FADE_RATE), 0);
+            lastAmplitude = Math.round(lastAmplitude * FADE_RATE);
+            color = Color.rgb(0, lastAmplitude / BIT_PER_AMPLITUDE, 0);
         }
-
-        lastAmplitude = amplitude;
 
         return color;
     }

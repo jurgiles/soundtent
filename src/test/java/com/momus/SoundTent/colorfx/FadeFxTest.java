@@ -17,7 +17,7 @@ public class FadeFxTest {
     private static final int MAX_COLOR = 255;
 
     @Test
-    public void getNewColorFromSingleAmplitude() {
+    public void shouldGetNewColorFromSingleAmplitude() {
         int expectedColor = Color.rgb(0, MID_AMP / FadeFx.BIT_PER_AMPLITUDE, 0);
 
         int newColor = new FadeFx().process(MID_AMP);
@@ -26,7 +26,7 @@ public class FadeFxTest {
     }
 
     @Test
-    public void getNewColorFromLargeAmplitude() {
+    public void shouldGetNewBrighterColorFromLargeAmplitude() {
         FadeFx fadeFx = new FadeFx();
 
         fadeFx.process(LOW_AMP);
@@ -37,7 +37,7 @@ public class FadeFxTest {
     }
 
     @Test
-    public void getNewColorFromFadingAmplitude() {
+    public void shouldGetNewColorFromFadingAmplitude() {
         FadeFx fader = new FadeFx();
 
         fader.process(HIGH_AMP);
@@ -55,5 +55,17 @@ public class FadeFxTest {
 
         int expectedMaxColor = Color.rgb(0, MAX_COLOR, 0);
         assertThat(newColor).isEqualTo(expectedMaxColor);
+    }
+
+    @Test
+    public void shouldNotAffectFadeIfAmplitudeIsLowerThanCurrentAmplitude() {
+        FadeFx fadeFx = new FadeFx();
+
+        fadeFx.process(HIGH_AMP);
+        fadeFx.process(MID_AMP);
+        int newColor = fadeFx.process(LOW_AMP);
+
+        int expectedFadedColor = Color.rgb(0, Math.round(HIGH_AMP / FadeFx.BIT_PER_AMPLITUDE * FadeFx.FADE_RATE * FadeFx.FADE_RATE), 0);
+        assertThat(newColor).isEqualTo(expectedFadedColor);
     }
 }
