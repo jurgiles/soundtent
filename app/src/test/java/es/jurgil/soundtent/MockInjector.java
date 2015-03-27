@@ -1,4 +1,4 @@
-package com.momus.SoundTent;
+package es.jurgil.soundtent;
 
 import com.google.inject.util.Modules;
 import org.robolectric.Robolectric;

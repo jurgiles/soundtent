@@ -1,11 +1,10 @@
-package com.momus.SoundTent.activities;
+package es.jurgil.soundtent.activities;
 
 import android.media.MediaRecorder;
 import android.os.Handler;
 import android.view.Window;
 import android.view.WindowManager;
-import com.momus.SoundTent.factories.AndroidModelFactory;
-import com.momus.SoundTent.runnables.MediaRecorderViewAdapter;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -17,15 +16,23 @@ import org.robolectric.util.ActivityController;
 
 import java.io.IOException;
 
+import es.jurgil.soundtent.factories.AndroidModelFactory;
+import es.jurgil.soundtent.runnables.MediaRecorderViewAdapter;
+import static es.jurgil.soundtent.MockInjector.mockInjector;
+
 import static com.googlecode.catchexception.CatchException.verifyException;
-import static com.momus.SoundTent.MockInjector.mockInjector;
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.robolectric.Robolectric.buildActivity;
 import static org.robolectric.Robolectric.shadowOf;
+
 
 @RunWith(RobolectricTestRunner.class)
 public class SoundTentActivityTest {

@@ -1,10 +1,11 @@
-package com.momus.SoundTent;
+package es.jurgil.soundtent;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
-import com.momus.SoundTent.factories.RunnableAdapterFactory;
 
 import java.util.HashMap;
+
+import es.jurgil.soundtent.factories.RunnableAdapterFactory;
 
 public class TestModule extends AbstractModule {
     private static final HashMap<Class, Object> classMocks = new HashMap<Class, Object>();

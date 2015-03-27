@@ -1,14 +1,16 @@
-package com.momus.SoundTent.runnables;
+package es.jurgil.soundtent.runnables;
 
 import android.media.MediaRecorder;
 import android.os.Handler;
 import android.view.View;
-import com.momus.SoundTent.activities.SoundTentActivity;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.robolectric.RobolectricTestRunner;
+
+import es.jurgil.soundtent.activities.SoundTentActivity;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;

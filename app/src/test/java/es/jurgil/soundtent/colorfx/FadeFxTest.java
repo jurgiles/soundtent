@@ -1,11 +1,12 @@
-package com.momus.SoundTent.colorfx;
+package es.jurgil.soundtent.colorfx;
 
 import android.graphics.Color;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 @RunWith(RobolectricTestRunner.class)
